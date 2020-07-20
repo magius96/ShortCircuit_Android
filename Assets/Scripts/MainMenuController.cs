@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Assets.Scripts;
+using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour 
 {
@@ -54,37 +55,37 @@ public class MainMenuController : MonoBehaviour
         if (GUI.Button(new Rect(left, pos, buttonWidth, buttonSize), "Classic Levels", _buttonStyle))
         {
             Globals.PreviousScreen.Push("MainMenuScreen");
-            Application.LoadLevel("ClassicLevelSelectScreen");
+            SceneManager.LoadScene("ClassicLevelSelectScreen");
         }
         pos += buttonSize + buttonSpacing;
         if (GUI.Button(new Rect(left, pos, buttonWidth, buttonSize), "Advanced Levels", _buttonStyle))
         {
             Globals.PreviousScreen.Push("MainMenuScreen");
-            Application.LoadLevel("AdvancedLevelSelectScreen");
+            SceneManager.LoadScene("AdvancedLevelSelectScreen");
         }
         pos += buttonSize + buttonSpacing;
         if (GUI.Button(new Rect(left, pos, buttonWidth, buttonSize), "Infinite Levels", _buttonStyle))
         {
             Globals.PreviousScreen.Push("MainMenuScreen");
-            Application.LoadLevel("InfiniteLevelSetupScreen");
+            SceneManager.LoadScene("InfiniteLevelSetupScreen");
         }
         pos += buttonSize + buttonSpacing;
         if (GUI.Button(new Rect(left, pos, buttonWidth, buttonSize), "Instructions", _buttonStyle))
         {
             Globals.PreviousScreen.Push("MainMenuScreen");
-            Application.LoadLevel("InstructionScreen");
+            SceneManager.LoadScene("InstructionScreen");
         }
         pos += buttonSize + buttonSpacing;
         if (GUI.Button(new Rect(left, pos, buttonWidth, buttonSize), "Options", _buttonStyle))
         {
             Globals.PreviousScreen.Push("MainMenuScreen");
-            Application.LoadLevel("OptionsScreen");
+            SceneManager.LoadScene("OptionsScreen");
         }
         pos += buttonSize + buttonSpacing;
         if (GUI.Button(new Rect(left, pos, buttonWidth, buttonSize), "Credits", _buttonStyle))
         {
             Globals.PreviousScreen.Push("MainMenuScreen");
-            Application.LoadLevel("CreditsScreen");
+            SceneManager.LoadScene("CreditsScreen");
         }
         pos += buttonSize + buttonSpacing;
         if (GUI.Button(new Rect(left, pos, buttonWidth, buttonSize), "Quit", _buttonStyle))

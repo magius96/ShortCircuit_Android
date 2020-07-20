@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using Assets.Scripts;
+using UnityEngine.SceneManagement;
 
 public class ButtonManager : MonoBehaviour 
 {
@@ -36,7 +37,7 @@ public class ButtonManager : MonoBehaviour
         {
             var target = Globals.PreviousScreen.Pop();
             if (string.IsNullOrEmpty(target)) target = "MainMenuScreen";
-            Application.LoadLevel(target);
+            SceneManager.LoadScene(target);
         }
         _grid = new int[Globals.CurrentLevel.MapSize, Globals.CurrentLevel.MapSize];
         for (var i = 0; i < Globals.CurrentLevel.MapSize; i++)
@@ -158,7 +159,7 @@ public class ButtonManager : MonoBehaviour
                 var previousScreen = Globals.PreviousScreen.Pop();
                 if (!string.IsNullOrEmpty(previousScreen))
                 {
-                    Application.LoadLevel(previousScreen);
+                    SceneManager.LoadScene(previousScreen);
                 }
                 else
                 {
@@ -208,7 +209,7 @@ public class ButtonManager : MonoBehaviour
                 Globals.CurrentLevel = Globals.CurrentLevel.NextLevel;
                 if (Globals.CurrentLevel == null)
                 {
-                    Application.LoadLevel("CreditsScreen");
+                    SceneManager.LoadScene("CreditsScreen");
                 }
                 SetupLevel();
             }

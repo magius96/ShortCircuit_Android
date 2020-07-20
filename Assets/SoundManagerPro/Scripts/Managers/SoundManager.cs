@@ -8,6 +8,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using antilunchbox;
+using UnityEngine.SceneManagement;
 
 [AddComponentMenu("AntiLunchBox/SoundManager")]
 /// <summary>
@@ -21,18 +22,22 @@ public partial class SoundManager : antilunchbox.Singleton<SoundManager> {
 		HandleSFX();
 	}
 
-	/// <summary>
-	/// Raises the level was loaded event, which handles the level loading behavior of SMP.
-	/// </summary>
-	/// <param name='level'>
-	/// Level.
-	/// </param>
-	public void OnLevelWasLoaded(int level)
-	{
-		if(Instance == this)
-			if(!ignoreLevelLoad)
-				HandleLevel(level);
-	}
+    private void OnEnable()
+    {
+        SceneManager.activeSceneChanged += SceneManager_activeSceneChanged;
+    }
+
+    private void OnDisable()
+    {
+		SceneManager.activeSceneChanged -= SceneManager_activeSceneChanged;
+    }
+
+    private void SceneManager_activeSceneChanged(Scene arg0, Scene arg1)
+    {
+		if (Instance == this)
+			if (!ignoreLevelLoad)
+				HandleLevel(SceneManager.GetActiveScene().buildIndex);
+    }
 
 	// Handle app focus
 	private void OnApplicationPause(bool pause)

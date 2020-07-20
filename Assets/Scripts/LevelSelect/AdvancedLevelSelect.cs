@@ -2,6 +2,7 @@
 using System.Collections;
 using Assets.Scripts;
 using Assets.Scripts.Levels;
+using UnityEngine.SceneManagement;
 
 public class AdvancedLevelSelect : MonoBehaviour 
 {
@@ -78,7 +79,7 @@ public class AdvancedLevelSelect : MonoBehaviour
                     SoundManager.PlaySFX("ButtonClick");
                     Globals.PreviousScreen.Push("AdvancedLevelSelectScreen");
                     Globals.CurrentLevel = _grid[i, j];
-                    Application.LoadLevel("GameScreen");
+                    SceneManager.LoadScene("GameScreen");
                 }
             }
         }

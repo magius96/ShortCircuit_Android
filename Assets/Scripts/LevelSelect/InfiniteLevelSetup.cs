@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using Assets.Scripts;
 using Assets.Scripts.Levels;
+using UnityEngine.SceneManagement;
 
 public class InfiniteLevelSetup : MonoBehaviour
 {
@@ -110,7 +111,7 @@ public class InfiniteLevelSetup : MonoBehaviour
             SoundManager.PlaySFX("ButtonClick");
             Globals.PreviousScreen.Push("InfiniteLevelSetupScreen");
             Globals.CurrentLevel = new InfiniteLevel();
-            Application.LoadLevel("GameScreen");
+            SceneManager.LoadScene("GameScreen");
         }
     }
 

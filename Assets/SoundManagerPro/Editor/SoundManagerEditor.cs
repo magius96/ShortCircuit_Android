@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 [CustomEditor(typeof(SoundManager))]
 public partial class SoundManagerEditor : Editor {	
@@ -333,7 +334,7 @@ public partial class SoundManagerEditor : Editor {
 	{
 		EditorGUI.indentLevel++;
 		{
-			EditorGUILayout.LabelField("Current Scene:", Application.loadedLevelName);
+			EditorGUILayout.LabelField("Current Scene:", SceneManager.GetActiveScene().name);
 			
 			float crossDuration = script.crossDuration;
 			crossDuration = EditorGUILayout.FloatField(new GUIContent("Cross Duration:","Duration of crossfades for music."),crossDuration);

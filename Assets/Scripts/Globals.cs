@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Levels;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts
 {
@@ -19,14 +20,14 @@ namespace Assets.Scripts
                 previousScreen = Globals.PreviousScreen.Pop();
             if (!string.IsNullOrEmpty(previousScreen))
             {
-                Application.LoadLevel(previousScreen);
+                SceneManager.LoadScene(previousScreen);
             }
             else
             {
                 if (orQuit)
                     Application.Quit();
                 else
-                    Application.LoadLevel("MainMenuScreen");
+                    SceneManager.LoadScene("MainMenuScreen");
             }
         }
 

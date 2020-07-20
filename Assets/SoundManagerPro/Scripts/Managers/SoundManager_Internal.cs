@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using antilunchbox;
+using UnityEngine.SceneManagement;
 
 public partial class SoundManager : antilunchbox.Singleton<SoundManager> {
 	
@@ -28,7 +29,7 @@ public partial class SoundManager : antilunchbox.Singleton<SoundManager> {
 			ClearAudioSources();
 			Init();
 			SetupSoundFX();
-			OnLevelWasLoaded(Application.loadedLevel);
+			SceneManager_activeSceneChanged(SceneManager.GetActiveScene(), SceneManager.GetActiveScene());
 		}
 	}
 	
@@ -146,13 +147,13 @@ public partial class SoundManager : antilunchbox.Singleton<SoundManager> {
 			return;
 		lastLevelLoad = Time.realtimeSinceStartup;
 		
-		if(showDebug)Debug.Log("(" +Time.time + ") In Level Loaded: " + Application.loadedLevelName);
-		int _indexOf = SoundConnectionsContainsThisLevel(Application.loadedLevelName);
+		if(showDebug)Debug.Log("(" +Time.time + ") In Level Loaded: " + SceneManager.GetActiveScene().name);
+		int _indexOf = SoundConnectionsContainsThisLevel(SceneManager.GetActiveScene().name);
 		if(_indexOf == SOUNDMANAGER_FALSE || soundConnections[_indexOf].isCustomLevel) {
 			silentLevel = true;
 		} else {
 			silentLevel = false;
-			currentLevel = Application.loadedLevelName;
+			currentLevel = SceneManager.GetActiveScene().name;
 			currentSoundConnection = soundConnections[_indexOf];
 		}
 		
@@ -265,9 +266,9 @@ public partial class SoundManager : antilunchbox.Singleton<SoundManager> {
 		
 		SoundConnection sc;
 		if(loop)
-			sc = new SoundConnection(Application.loadedLevelName,PlayMethod.ContinuousPlayThrough,clip2play);
+			sc = new SoundConnection(SceneManager.GetActiveScene().name, PlayMethod.ContinuousPlayThrough,clip2play);
 		else
-			sc = new SoundConnection(Application.loadedLevelName,PlayMethod.OncePlayThrough,clip2play);
+			sc = new SoundConnection(SceneManager.GetActiveScene().name, PlayMethod.OncePlayThrough,clip2play);
 		PlayConnection(sc);
 	}
 	

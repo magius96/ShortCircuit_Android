@@ -592,7 +592,7 @@ public class AudioSourceProEditor : Editor {
 			if(evt != null)
 			{
 				var textRect = GUILayoutUtility.GetLastRect();
-				if(evt.type == EventType.mouseDown && evt.clickCount == 2)
+				if(evt.type == EventType.MouseDown && evt.clickCount == 2)
 				{
 					if(textRect.Contains(evt.mousePosition))
 					{
