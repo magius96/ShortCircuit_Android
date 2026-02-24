@@ -1,20 +1,21 @@
 ﻿using UnityEngine;
 using Assets.Scripts;
+using UnityEngine.UI;
 
 public class OptionsController : MonoBehaviour
 {
-    private bool _initialized = false;
-    private GUIStyle _headerStyle;
-    private GUIStyle _backBoxStyle;
+    public Slider MusicSlider;
+    public Slider SoundSlider;
 
 	void Start ()
     {
-	    
-	}
+        Globals.Load();
+        MusicSlider.value = Globals.MusicVolume;
+        SoundSlider.value = Globals.SoundVolume;
+    }
 	
 	void Update ()
     {
-        if (!_initialized) Initialize();
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             SoundManager.PlaySFX("ButtonClick");
@@ -22,37 +23,20 @@ public class OptionsController : MonoBehaviour
         }
 	}
 
-    private void Initialize()
+    public void BackButtonPressed()
     {
-        _headerStyle = new GUIStyle();
-        _headerStyle.fontSize = 50;
-        _headerStyle.alignment = TextAnchor.UpperCenter;
-        _headerStyle.normal.textColor = Color.yellow;
-
-        _backBoxStyle = new GUIStyle();
-        _backBoxStyle.normal.background = Globals.MakeColorTex(Color.blue);
-        _backBoxStyle.normal.textColor = Color.white;
-        _backBoxStyle.alignment = TextAnchor.UpperCenter;
-        _backBoxStyle.fontSize = 22;
+        SoundManager.PlaySFX("ButtonClick");
+        Globals.LoadPreviousScreen();
     }
 
-    void OnGUI()
+    public void MusicSliderChanged()
     {
-        float rx = Screen.width / Globals.NativeWidth;
-        float ry = Screen.height / Globals.NativeHeight;
-        GUI.matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.identity, new Vector3(rx, ry, 1));
+        Globals.MusicVolume = MusicSlider.value;
+    }
 
-        GUI.Label(new Rect(10, 10, 300, 60), "Options", _headerStyle);
-
-        GUI.Box(new Rect(10, 185, 300, 40), "Music Volume", _backBoxStyle);
-        Globals.MusicVolume = GUI.HorizontalSlider(new Rect(15, 210, 290, 20), Globals.MusicVolume, 0, .25f);
-
-        GUI.Box(new Rect(10, 250, 300, 40), "Sound Volume", _backBoxStyle);
-        float val = GUI.HorizontalSlider(new Rect(15, 275, 290, 20), Globals.SoundVolume, 0, 1);
-        if(val != Globals.SoundVolume)
-        {
-            Globals.SoundVolume = val;
-            SoundManager.PlaySFX("ding");
-        }
+    public void SoundSliderChanged()
+    {
+        Globals.SoundVolume = SoundSlider.value;
+        SoundManager.PlaySFX("ding");
     }
 }
