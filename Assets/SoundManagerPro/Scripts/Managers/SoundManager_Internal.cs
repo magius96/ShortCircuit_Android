@@ -147,7 +147,6 @@ public partial class SoundManager : antilunchbox.Singleton<SoundManager> {
 			return;
 		lastLevelLoad = Time.realtimeSinceStartup;
 		
-		if(showDebug)Debug.Log("(" +Time.time + ") In Level Loaded: " + SceneManager.GetActiveScene().name);
 		int _indexOf = SoundConnectionsContainsThisLevel(SceneManager.GetActiveScene().name);
 		if(_indexOf == SOUNDMANAGER_FALSE || soundConnections[_indexOf].isCustomLevel) {
 			silentLevel = true;
@@ -159,29 +158,23 @@ public partial class SoundManager : antilunchbox.Singleton<SoundManager> {
 		
 		if(!silentLevel && !offTheBGM)
 		{
-			if(showDebug)Debug.Log("BGM activated.");
 			StopPreviousPlaySoundConnection();
 			StartCoroutine("PlaySoundConnection", currentSoundConnection);
 		} 
 		else 
 		{
-			if(showDebug)Debug.Log("BGM deactivated.");
 			currentSoundConnection = null;
 			audios[0].loop = false;
 			audios[1].loop = false;
-			if(showDebug)Debug.Log("Don't play anything in this scene, cross out.");
 			currentPlaying = CheckWhosPlaying();
 			StopAllCoroutines();
 			if(currentPlaying == SOUNDMANAGER_FALSE) {
-				if(showDebug)Debug.Log("Nothing is playing, don't do anything.");
 				return;
 			}
 			else if(CheckWhosNotPlaying() == SOUNDMANAGER_FALSE) {
-				if(showDebug)Debug.Log("Both sources are playing, probably in a crossfade. Crossfade them both out.");
 				StartCoroutine("CrossoutAll",crossDuration);
 			} else if(audios[currentPlaying].isPlaying)
 			{
-				if(showDebug)Debug.Log("Crossing out the source that is playing.");
 				StartCoroutine("Crossout", new object[]{audios[currentPlaying],crossDuration});
 			}	
 		}
@@ -364,7 +357,6 @@ public partial class SoundManager : antilunchbox.Singleton<SoundManager> {
 	/// </returns>
 	private int PlayClip(AudioClip clip2play, float clipVolume=1f)
 	{
-		if(showDebug)Debug.Log ("Playing: " + clip2play.name);
 		currentPlaying = CheckWhosPlaying();
 		int notPlaying = CheckWhosNotPlaying();
 		if(currentPlaying != SOUNDMANAGER_FALSE) //If an AudioSource is playing...
@@ -373,16 +365,13 @@ public partial class SoundManager : antilunchbox.Singleton<SoundManager> {
 			{
 				if((audios[currentPlaying].clip.Equals(clip2play) && audios[currentPlaying].isPlaying)) //If the current playing source is playing the clip...
 				{
-					if(showDebug)Debug.Log("Already playing BGM, check if crossing out("+outCrossing[currentPlaying]+") or in("+inCrossing[currentPlaying]+").");
 					if(outCrossing[currentPlaying]) //If that source is crossing out, stop it and cross it back in.
 					{
 						StopAllNonSoundConnectionCoroutines();
-						if(showDebug)Debug.Log("In the process of crossing out, so that is being changed to cross in now.");
 						outCrossing[currentPlaying] = false;
 						StartCoroutine("Crossin", new object[]{audios[currentPlaying],crossDuration,clipVolume});
 						return currentPlaying;
 					} else if (movingOnFromSong) {
-						if(showDebug)Debug.Log("Current song is actually done, so crossfading to another instance of it.");
 						if(audios[notPlaying] == null || audios[notPlaying].clip == null || !audios[notPlaying].clip.Equals(clip2play))
 							audios[notPlaying].clip = clip2play;
 						StartCoroutine("Crossfade", new object[]{audios[currentPlaying],audios[notPlaying],crossDuration,clipVolume});
@@ -393,7 +382,6 @@ public partial class SoundManager : antilunchbox.Singleton<SoundManager> {
 				else //If the current playing source is not playing the clip, crossfade to the clip normally.
 				{
 					StopAllNonSoundConnectionCoroutines();
-					if(showDebug)Debug.Log("Playing another track, crossfading to that.");
 					audios[notPlaying].clip = clip2play;
 					StartCoroutine("Crossfade", new object[]{audios[currentPlaying],audios[notPlaying],crossDuration,clipVolume});
 					return notPlaying;
@@ -402,10 +390,8 @@ public partial class SoundManager : antilunchbox.Singleton<SoundManager> {
 			else //If both AudioSources are playing...
 			{
 				int lastPlaying = GetActualCurrentPlayingIndex();
-				if(showDebug)Debug.Log("Both are playing (crossfade situation).");
 				if(clip2play.Equals(audios[0].clip) && clip2play.Equals(audios[1].clip))
 				{
-					if(showDebug)Debug.Log("If clip == clip in audio1 AND audio2, then do nothing and let it finish.");
 					int swapIn = (lastPlaying == 0) ? 0 : 1;
 					
 					if(!audios[0].isPlaying)audios[0].Play();
@@ -418,12 +404,10 @@ public partial class SoundManager : antilunchbox.Singleton<SoundManager> {
 					bool switcheroo = false;
 					if(outCrossing[0] && ((audios[0].clip.samples - audios[0].timeSamples)*1f) / (audios[0].clip.frequency*1f) <= crossDuration) // If the clip is crossing out though, cross in the new track started over.
 					{
-						if(showDebug)Debug.Log("Clip == clip in audio1, but it's crossing out so cross it in from the beginning.");
 						audios[1].clip = clip2play;
 						audios[1].timeSamples = 0;
 						switcheroo = true;
 					}
-					else if(showDebug)Debug.Log("If clip == clip in audio1, then just switch them.");
 					
 					int swapIn = (lastPlaying == 0) ? 0 : 1;
 					int swapOut = (swapIn == 0) ? 1 : 0;
@@ -451,12 +435,10 @@ public partial class SoundManager : antilunchbox.Singleton<SoundManager> {
 					bool switcheroo = false;
 					if(outCrossing[1] && ((audios[1].clip.samples - audios[1].timeSamples)*1f) / (audios[1].clip.frequency*1f) <= crossDuration) // If the clip is crossing out though, cross in the new track started over.
 					{
-						if(showDebug)Debug.Log("Clip == clip in audio2, but it's crossing out so cross it in from the beginning.");
 						audios[0].clip = clip2play;
 						audios[0].timeSamples = 0;
 						switcheroo = true;
 					}
-					else if(showDebug)Debug.Log("If clip == clip in audio2, then just switch them.");
 					
 					int swapIn = (lastPlaying == 0) ? 0 : 1;
 					int swapOut = (swapIn == 0) ? 1 : 0;
@@ -482,7 +464,6 @@ public partial class SoundManager : antilunchbox.Singleton<SoundManager> {
 				else 
 				{ // If the clip is not in either source1 or source2...
 					StopAllNonSoundConnectionCoroutines();
-					if(showDebug)Debug.Log("If clip is in neither, find the louder one and crossfade from that one.");
 					if(audios[0].volume > audios[1].volume) //If source1 is louder than source2, then crossfade from source1.
 					{
 						audios[1].clip = clip2play;
@@ -502,7 +483,6 @@ public partial class SoundManager : antilunchbox.Singleton<SoundManager> {
 		{
 			if(audiosPaused[0] && audiosPaused[1]) // paused and playing two tracks (crossfading)
 			{
-				if(showDebug)Debug.Log("All sound is paused and it's crossfading between two songs. Replace the lower volume song and prepare for crossfade on unpause.");
 				int lesserAudio = (audios[0].volume > audios[1].volume) ? 1 : 0;
 				int greaterAudio = (lesserAudio == 0) ? 1 : 0;
 				audios[lesserAudio].clip = clip2play;
@@ -510,21 +490,18 @@ public partial class SoundManager : antilunchbox.Singleton<SoundManager> {
 			}
 			else if(audiosPaused[0]) // track 1 is paused
 			{
-				if(showDebug)Debug.Log("All sound is paused and track1 is playing. Prepare for crossfade on unpause.");
 				audios[1].clip = clip2play;
 				audiosPaused[1] = true;
 				StartCoroutine("Crossfade", new object[]{audios[0], audios[1],crossDuration,clipVolume});
 			}
 			else if(audiosPaused[1]) // track 2 is paused
 			{
-				if(showDebug)Debug.Log("All sound is paused and track2 is playing. Prepare for crossfade on unpause.");
 				audios[0].clip = clip2play;
 				audiosPaused[0] = true;
 				StartCoroutine("Crossfade", new object[]{audios[1], audios[0],crossDuration,clipVolume});
 			}
 			else // silent scene
 			{
-				if(showDebug)Debug.Log("Wasn't playing anything, crossing in.");
 				audios[notPlaying].clip = clip2play;
 				StartCoroutine("Crossin", new object[]{audios[notPlaying],crossDuration,clipVolume});
 			}
