@@ -3,7 +3,7 @@
     class Advanced23 : GameLevel
     {
         public Advanced23()
-            : base("Advanced23")
+            : base("Advanced23", "2-3")
         {
             Initialize(4, 8);
             MapButtons = new int[,]

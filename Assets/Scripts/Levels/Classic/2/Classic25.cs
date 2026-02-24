@@ -3,7 +3,7 @@
     class Classic25 : GameLevel
     {
         public Classic25()
-            : base("Classic25")
+            : base("Classic25", "2-5")
         {
             Initialize(4, 4);
             MapButtons = new int[,]

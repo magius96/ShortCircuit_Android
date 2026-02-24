@@ -8,7 +8,7 @@ namespace Assets.Scripts.Levels
         private int[,] _switches;
 
         public InfiniteLevel()
-            : base("InfiniteLevel")
+            : base("InfiniteLevel", "Infinite")
         {
             // This level should never be displayed.
             Initialize(Globals.InfiniteLevelGridSize, Globals.InfiniteLevelMoves);

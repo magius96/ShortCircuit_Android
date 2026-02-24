@@ -5,7 +5,7 @@ namespace Assets.Scripts.Levels
     class Classic32 : GameLevel
     {
         public Classic32()
-            : base("Classic32")
+            : base("Classic32", "3-2")
         {
             Initialize(5, 5);
             MapButtons = new int[,]

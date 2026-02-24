@@ -6,7 +6,7 @@ namespace Assets.Scripts.Levels
     class Advanced27 : GameLevel
     {
         public Advanced27()
-            : base("Advanced27")
+            : base("Advanced27", "2-7")
         {
             Initialize(4, 8);
             MapButtons = new int[,]

@@ -2,7 +2,7 @@
 {
     class TestLevel : GameLevel
     {
-        public TestLevel() : base("TestLevel")
+        public TestLevel() : base("TestLevel", "TEST")
         {
             // This level should never be displayed.
             Initialize(3, 1);

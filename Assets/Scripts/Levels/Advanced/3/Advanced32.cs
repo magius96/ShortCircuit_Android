@@ -3,7 +3,7 @@
     class Advanced32 : GameLevel
     {
         public Advanced32()
-            : base("Advanced32")
+            : base("Advanced32", "3-2")
         {
             Initialize(5, 13);
             MapButtons = new int[,]

@@ -5,18 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuButton : MonoBehaviour
 {
-
-    public enum MainMenuButtonType
-    {
-        ClassicLevels,
-        AdvancedLevels,
-        InfiniteLevels,
-        Instructions,
-        Options,
-        Credits,
-        Quit
-    }
-
     public void Start()
     {
         SetText();

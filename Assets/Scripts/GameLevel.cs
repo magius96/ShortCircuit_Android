@@ -13,6 +13,7 @@ namespace Assets.Scripts
         public int[,] MapButtons;
 
         public string Id = "";
+        public string Name = "";
 
         public int MapSize { get { return _mapGridSize; } }
         public int MinimumMoves { get {  return _minimumMoves; } }
@@ -44,9 +45,10 @@ namespace Assets.Scripts
             }
         }
 
-        public GameLevel(string id)
+        public GameLevel(string id, string name)
         {
             Id = id;
+            Name = name;
             PrepArray(5);
         }
     }
