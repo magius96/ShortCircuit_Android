@@ -31,8 +31,8 @@ namespace antilunchbox
 			get {
 				if(!_mInstance)
 				{
-					T [] managers = GameObject.FindObjectsOfType(typeof(T)) as T[];
-					if(managers.Length != 0)
+					T [] managers = Object.FindObjectsByType<T>(FindObjectsSortMode.None);
+                    if (managers.Length != 0)
 					{
 						if(managers.Length == 1)
 						{
