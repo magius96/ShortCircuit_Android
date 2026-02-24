@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 
 public class BackgroundPulse : MonoBehaviour 
@@ -10,7 +9,7 @@ public class BackgroundPulse : MonoBehaviour
     private bool _goingUp = true;
     private Image _image;
 
-    void Update () 
+    void FixedUpdate () 
     {
         if (!Pulse) return;
         if (_image == null)
@@ -19,11 +18,11 @@ public class BackgroundPulse : MonoBehaviour
         }
         if (_goingUp)
         {
-            _pulseValue += GameConstants.BackgroundPusleChangeAmount;
+            _pulseValue += GameConstants.BackgroundPulseChangeAmount;
         }
         else
         {
-            _pulseValue -= GameConstants.BackgroundPusleChangeAmount;
+            _pulseValue -= GameConstants.BackgroundPulseChangeAmount;
         }
 
         if (_goingUp && _pulseValue >= GameConstants.BackgroundPulseTopValue)

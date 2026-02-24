@@ -1,11 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 using Assets.Scripts;
 
 public class OptionsController : MonoBehaviour
 {
-    public float MusicVolumeTop = 195;
-    public float SoundVolumeTop = 285;
     private bool _initialized = false;
     private GUIStyle _headerStyle;
     private GUIStyle _backBoxStyle;

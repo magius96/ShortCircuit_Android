@@ -20,8 +20,8 @@ public class SMProHierarchyIcon : MonoBehaviour {
     {
 		if(icon == null)
 			return;
-       	
-		SoundManager[] smps = Object.FindObjectsOfType (typeof(SoundManager)) as SoundManager[];
+
+        SoundManager[] smps = Object.FindObjectsByType (typeof(SoundManager), FindObjectsSortMode.None) as SoundManager[];
 		
 		foreach (SoundManager smp in smps) 
 		{
