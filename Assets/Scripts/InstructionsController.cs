@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 using Assets.Scripts;
+using TMPro;
+using UnityEngine.UI;
 
 public class InstructionsController : MonoBehaviour 
 {
-    private bool _initialized = false;
-    private GUIStyle _headerStyle;
-    private GUIStyle _selectedTabStyle;
-    private GUIStyle _tabStyle;
-    private GUIStyle _boxStyle;
+    public TextMeshProUGUI DisplayText;
+    public Button OverviewButton;
+    public Button ClassicButton;
+    public Button AdvancedButton;
+    public Button ScoringButton;
+
     private TabState _state = TabState.Overview;
 
     private string _overviewText = "Short Circuit is played on a grid of lights. To play the game, you turn the lights on or off by clicking on them. " +
@@ -19,9 +22,16 @@ public class InstructionsController : MonoBehaviour
     private string _scoringText = "Scoring in Short Circuit is the same as in golf. Each level has a par, the minimum number of moves needed to complete the level.  If you complete a level " +
         "with more moves than par, then the level will be shown as yellow on the level select screen. If you beat the level at or below par, it will be green on the level select screen.";
 
+    private Color _selectedColor = new Color(0f, 0f, 1f);
+    private Color _unselectedColor = new Color(0f, 0f, 0.5f);
+
+    private void Start()
+    {
+        DoUpdates();
+    }
+
     void Update()
     {
-        if (!_initialized) Initialize();
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             SoundManager.PlaySFX("ButtonClick");
@@ -29,75 +39,67 @@ public class InstructionsController : MonoBehaviour
         }
     }
 
-    private void Initialize()
+    private void DoUpdates()
     {
-        _headerStyle = new GUIStyle();
-        _headerStyle.fontSize = 50;
-        _headerStyle.alignment = TextAnchor.UpperCenter;
-        _headerStyle.normal.textColor = Color.yellow;
-
-        _selectedTabStyle = new GUIStyle();
-        _selectedTabStyle.normal.background = Globals.MakeColorTex(Color.blue);
-        _selectedTabStyle.normal.textColor = Color.white;
-        _selectedTabStyle.alignment = TextAnchor.MiddleCenter;
-        _selectedTabStyle.fontStyle = FontStyle.Bold;
-        _selectedTabStyle.fontSize = 12;
-        _selectedTabStyle.border = new RectOffset(1, 1, 1, 1);
-
-        _tabStyle = new GUIStyle();
-        _tabStyle.normal.background = Globals.MakeColorTex(new Color(0f, 0f, 0.5f));
-        _tabStyle.normal.textColor = Color.gray;
-        _tabStyle.alignment = TextAnchor.MiddleCenter;
-        _tabStyle.fontStyle = FontStyle.Bold;
-        _tabStyle.fontSize = 12;
-        _tabStyle.border = new RectOffset(1, 1, 1, 1);
-
-        _boxStyle = new GUIStyle();
-        _boxStyle.wordWrap = true;
-        _boxStyle.normal.background = Globals.MakeColorTex(new Color(0f, 0f, 0f, 0.75f));
-        _boxStyle.normal.textColor = Color.white;
-        _boxStyle.fontSize = 22;
-        _boxStyle.padding = new RectOffset(10, 10, 10, 10);
+        UpdateDisplayText();
+        UpdateButtonColors();
     }
 
-    void OnGUI()
+    private void UpdateButtonColors()
     {
-        float rx = Screen.width / Globals.NativeWidth;
-        float ry = Screen.height / Globals.NativeHeight;
-        GUI.matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.identity, new Vector3(rx, ry, 1));
+        OverviewButton.GetComponent<Image>().color = _state == TabState.Overview ? _selectedColor : _unselectedColor;
+        ClassicButton.GetComponent<Image>().color = _state == TabState.Classic ? _selectedColor : _unselectedColor;
+        AdvancedButton.GetComponent<Image>().color = _state == TabState.Advanced ? _selectedColor : _unselectedColor;
+        ScoringButton.GetComponent<Image>().color = _state == TabState.Scoring ? _selectedColor : _unselectedColor;
+    }
 
-        GUI.Label(new Rect(10, 10, 300, 60), "Instructions", _headerStyle);
+    private void UpdateDisplayText()
+    {
+        switch (_state)
+        {
+            case TabState.Overview:
+                DisplayText.text = _overviewText; break;
+            case TabState.Classic:
+                DisplayText.text = _classicText; break;
+            case TabState.Advanced:
+                DisplayText.text = _advancedText; break;
+            case TabState.Scoring:
+                DisplayText.text = _scoringText; break;
+        }
+    }
 
-        if (GUI.Button(new Rect(10, 70, 70, 40), "Overview", _state == TabState.Overview ? _selectedTabStyle : _tabStyle))
-        {
-            SoundManager.PlaySFX("LightButtonClick");
-            _state = TabState.Overview;
-        }
-        if (GUI.Button(new Rect(85, 70, 70, 40), "Classic", _state == TabState.Classic ? _selectedTabStyle : _tabStyle))
-        {
-            SoundManager.PlaySFX("LightButtonClick");
-            _state = TabState.Classic;
-        }
-        if (GUI.Button(new Rect(160, 70, 70, 40), "Advanced", _state == TabState.Advanced ? _selectedTabStyle : _tabStyle))
-        {
-            SoundManager.PlaySFX("LightButtonClick");
-            _state = TabState.Advanced;
-        }
-        if (GUI.Button(new Rect(235, 70, 70, 40), "Scoring", _state == TabState.Scoring ? _selectedTabStyle : _tabStyle))
-        {
-            SoundManager.PlaySFX("LightButtonClick");
-            _state = TabState.Scoring;
-        }
+    public void OverviewButtonClicked()
+    {
+        SoundManager.PlaySFX("LightButtonClick");
+        _state = TabState.Overview;
+        DoUpdates();
+    }
 
-        var boxText = "";
-        switch(_state)
-        {
-            case TabState.Overview: boxText = _overviewText; break;
-            case TabState.Classic: boxText = _classicText; break;
-            case TabState.Advanced: boxText = _advancedText; break;
-            case TabState.Scoring: boxText = _scoringText; break;
-        }
-        GUI.Box(new Rect(10, 110, 300, 360), boxText, _boxStyle);
+    public void ClassicButtonClicked()
+    {
+        SoundManager.PlaySFX("LightButtonClick");
+        _state = TabState.Classic;
+        DoUpdates();
+    }
+
+    public void AdvancedButtonClicked()
+    {
+        SoundManager.PlaySFX("LightButtonClick");
+        _state = TabState.Advanced;
+        DoUpdates();
+    }
+
+    public void ScoringButtonClicked()
+    {
+        SoundManager.PlaySFX("LightButtonClick");
+        _state = TabState.Scoring;
+        DoUpdates();
+    }
+
+    public void BackButtonClicked()
+    {
+        SoundManager.PlaySFX("ButtonClick");
+        Globals.LoadPreviousScreen();
     }
 
     enum TabState
