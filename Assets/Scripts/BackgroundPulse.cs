@@ -4,9 +4,6 @@ using UnityEngine.UI;
 
 public class BackgroundPulse : MonoBehaviour 
 {
-    public float PulseChangeAmount = 0.001f;
-    public float TopPulsevalue = 0.8f;
-    public float BottomPulseValue = 0.3f;
     public bool Pulse = true;
 
     private float _pulseValue = 0.5f;
@@ -22,19 +19,19 @@ public class BackgroundPulse : MonoBehaviour
         }
         if (_goingUp)
         {
-            _pulseValue += PulseChangeAmount;
+            _pulseValue += GameConstants.BackgroundPusleChangeAmount;
         }
         else
         {
-            _pulseValue -= PulseChangeAmount;
+            _pulseValue -= GameConstants.BackgroundPusleChangeAmount;
         }
 
-        if (_goingUp && _pulseValue >= TopPulsevalue)
+        if (_goingUp && _pulseValue >= GameConstants.BackgroundPulseTopValue)
         {
             _goingUp = false;
         }
 
-        if (!_goingUp && _pulseValue <= BottomPulseValue)
+        if (!_goingUp && _pulseValue <= GameConstants.BackgroundPulseBottomValue)
         {
             _goingUp = true;
         }
